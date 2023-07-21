@@ -39,36 +39,36 @@ namespace ElevatorControlAPI.Controllers
             return floor == null ? Results.NotFound() : Results.Ok(floor);
         }
 
-        [HttpPost]
-        [Route("RequestElevator")]
+        [HttpGet("RequestElevator")]
         /// Request an elevator from a given floor.
-        public void RequestElevator([FromQuery(Name = "floorId")] string floorId)
-        {   
+        public IResult RequestElevator([FromQuery(Name = "floorId")] string floorId)
+        {
+            Elevator elevator = null;
             try
             {
-                bll.RequestElevator(floorId);
-                Results.Ok(true);
+                elevator = bll.RequestElevator(floorId);
             }
             catch (Exception ex)
             {
                 Results.Problem(floorId, ex.Message);
             }
+            return elevator == null ? Results.NotFound() : Results.Ok(String.Format("Sucessfully requested Elevator {0} from Floor {1}", elevator.Id, floorId));
         }
 
-        [HttpPost]
-        [Route("RequestFloor")]
+        [HttpGet("RequestFloor")]
         /// Requests a floor from a given elevator (i.e. person presses button inside elevator).
-        public void RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
+        public IResult RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
         {
+            Floor floor = null;
             try
             {
-                bll.RequestFloor(elevatorId, floorId);
-                Results.Ok(true);
+                floor = bll.RequestFloor(elevatorId, floorId);
             }
             catch (Exception ex)
             {
                 Results.Problem(floorId, ex.Message);
             }
+            return floor == null ? Results.NotFound() : Results.Ok(String.Format("Sucessfully requested Floor {0} from Elevator {1}", floor.Id, elevatorId));
         }
 
 
