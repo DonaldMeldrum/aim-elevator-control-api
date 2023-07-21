@@ -13,20 +13,18 @@ namespace ElevatorControlAPI.Repositories
         /// Submit elevator request from a given floor
         /// </summary>
         /// <param name="elevatorRequest"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public void AddElevatorRequest(ElevatorRequest elevatorRequest)
         {
-            throw new NotImplementedException();
+            ///TODO: Submit request to data layer
         }
 
         /// <summary>
         /// Submit floor request from a given elevator
         /// </summary>
         /// <param name="floorRequest"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public void AddFloorRequest(FloorRequest floorRequest)
         {
-            throw new NotImplementedException();
+            ///TODO: Submit request to data layer
         }
 
         /// <summary>
@@ -36,7 +34,17 @@ namespace ElevatorControlAPI.Repositories
         /// <exception cref="NotImplementedException"></exception>
         public Elevator[] GetElevators()
         {
-            throw new NotImplementedException();
+            ///TODO: Replace dummy data with call to data layer
+            return Enumerable.Range(1, 1).Select(index => new Elevator
+            {
+                Id = Guid.NewGuid(),
+                RequestArray = Enumerable.Range(1, 6).Select(index => new FloorRequest
+                {
+                    RequestedFloor = new Floor() { Id = Guid.NewGuid(), DisplayName = "F" + index, LevelNumber = index },
+                    RequestTime = DateTime.Now,
+                    Status = RequestStatus.Pending
+                }).ToArray()                
+            }).ToArray();
         }
 
         /// <summary>
@@ -47,7 +55,13 @@ namespace ElevatorControlAPI.Repositories
         /// <exception cref="NotImplementedException"></exception>
         public FloorRequest[] GetFloorRequests(Guid elevatorId)
         {
-            throw new NotImplementedException();
+            ///TODO: Replace dummy data with call to data layer
+            return Enumerable.Range(1, 8).Select(index => new FloorRequest
+            {
+                RequestedFloor = new Floor() { Id = Guid.NewGuid(), DisplayName = "F" + index, LevelNumber = index },
+                RequestTime = DateTime.Now,
+                Status = RequestStatus.Pending
+            }).ToArray();
         }
     }
 }
