@@ -2,9 +2,10 @@
 {
     public interface IElevatorRepository
     {
-        void AddFloorRequest(FloorRequest floorRequest);
-        void AddElevatorRequest(ElevatorRequest elevatorRequest);
+        void AddRequest(Request request);
         Elevator[] GetElevators();
-        FloorRequest[] GetFloorRequests(Guid elevatorId);
+        Elevator GetElevator(Guid elevatorId);
+        Floor GetFloor(Guid floorId);
+        Request[] GetFloorRequests(Guid elevatorId);
     }
 }
