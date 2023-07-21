@@ -26,7 +26,7 @@ namespace ElevatorControlAPI.BusinessLogic
             Guid guid = ValidateGuid(elevatorId);
             ElevatorRepository repository = new ElevatorRepository();
             var requestedFloors = repository.GetFloorRequests(guid);
-            return (IEnumerable<Floor>)requestedFloors.ToList();
+            return (IEnumerable<Floor>)requestedFloors.Select(req => req.Floor).ToList();
         }
 
         /// <summary>
