@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Text.Json.Nodes;
 
 namespace ElevatorControlAPI.Controllers
@@ -18,6 +19,7 @@ namespace ElevatorControlAPI.Controllers
         }
 
         [HttpGet("GetRequestedFloors")]
+        /// Gets a list of the floors that have been requested (i.e. which buttons should light up).
         public ActionResult<IEnumerable<Floor>> GetRequestedFloors([FromQuery(Name = "elevatorId")] string elevatorId)
         {
             Console.WriteLine(elevatorId);
@@ -29,6 +31,7 @@ namespace ElevatorControlAPI.Controllers
         }
 
         [HttpGet("get-next-floor")]
+        /// Get the next floor to be serviced for given elevator.
         public ActionResult<Floor> GetNextFloor([FromQuery(Name = "elevatorId")] string elevatorId) 
         {
 
@@ -42,6 +45,7 @@ namespace ElevatorControlAPI.Controllers
 
         [HttpPost]
         [Route("request-elevator")]
+        /// Request an elevator from a given floor.
         public void RequestElevator([FromQuery(Name = "floorId")] string floorId)
         {
             Console.WriteLine(floorId);
@@ -49,6 +53,7 @@ namespace ElevatorControlAPI.Controllers
 
         [HttpPost]
         [Route("request-floor")]
+        /// Requests a floor from a given elevator (i.e. person presses button inside elevator).
         public void RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
         {
             Console.WriteLine(elevatorId);

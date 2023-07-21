@@ -10,44 +10,42 @@ namespace ElevatorControlAPI.Repositories
         }
 
         /// <summary>
-        /// Gets a list of the floors that have been requested (i.e. which buttons should light up).
+        /// Submit elevator request from a given floor
         /// </summary>
-        /// <param name="elevator"></param>
+        /// <param name="elevatorRequest"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void AddElevatorRequest(ElevatorRequest elevatorRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Submit floor request from a given elevator
+        /// </summary>
+        /// <param name="floorRequest"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void AddFloorRequest(FloorRequest floorRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get all elevators
+        /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public FloorRequest[] GetFloorRequests(Elevator elevator)
+        public Elevator[] GetElevators()
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Get the next floor to be serviced for given elevator.
+        /// Get all floor requests for a given elevator id
         /// </summary>
-        /// <param name="elevator"></param>
+        /// <param name="elevatorId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Floor GetNextFloor(Elevator elevator)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Request an elevator from a given floor.
-        /// </summary>
-        /// <param name="floor"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void RequestElevator(Floor floor)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Requests a floor from a given elevator (i.e. person presses button inside elevator).
-        /// </summary>
-        /// <param name="elevator"></param>
-        /// <param name="floor"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void RequestFloor(Elevator elevator, Floor floor)
+        public FloorRequest[] GetFloorRequests(Guid elevatorId)
         {
             throw new NotImplementedException();
         }
