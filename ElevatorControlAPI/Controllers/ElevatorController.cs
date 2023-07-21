@@ -1,58 +1,74 @@
+using ElevatorControlAPI.BusinessLogic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
+using System.Drawing;
 using System.Text.Json.Nodes;
 
 namespace ElevatorControlAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ElevatorController : ControllerBase
     { 
         private readonly ILogger<ElevatorController> _logger;
+        private ElevatorBusiness bll;
 
         public ElevatorController(ILogger<ElevatorController> logger)
         {
             _logger = logger;
+            bll = new ElevatorBusiness(_logger);
         }
 
         [HttpGet("GetRequestedFloors")]
-        public ActionResult<IEnumerable<Floor>> GetRequestedFloors([FromQuery(Name = "elevatorId")] string elevatorId)
+        /// Gets a list of the floors that have been requested (i.e. which buttons should light up).
+        public IResult GetRequestedFloors([FromQuery(Name = "elevatorId")] string elevatorId)
         {
-            Console.WriteLine(elevatorId);
-            return Enumerable.Range(1, 5).Select(index => new Floor
+            var requestedFloors = bll.GetRequestedFloors(elevatorId);
+            return requestedFloors == null ? Results.NotFound() : Results.Ok(requestedFloors);
+        }
+
+        [HttpGet("GetNextFloor")]
+        /// Get the next floor to be serviced for given elevator.
+        public IResult GetNextFloor([FromQuery(Name = "elevatorId")] string elevatorId) 
+        {
+            var floor = bll.GetNextFloor(elevatorId);
+            return floor == null ? Results.NotFound() : Results.Ok(floor);
+        }
+
+        [HttpGet("RequestElevator")]
+        /// Request an elevator from a given floor.
+        public IResult RequestElevator([FromQuery(Name = "floorId")] string floorId)
+        {
+            Elevator elevator = null;
+            try
             {
-                DisplayName = "F" + new Random().Next(0, 10),
-                LevelNumber = new Random().Next(0, 10)
-            }).ToArray();
-        }
-
-        [HttpGet("get-next-floor")]
-        public ActionResult<Floor> GetNextFloor([FromQuery(Name = "elevatorId")] string elevatorId) 
-        {
-
-            Console.WriteLine(elevatorId);
-            return new Floor()
+                elevator = bll.RequestElevator(floorId);
+            }
+            catch (Exception ex)
             {
-                DisplayName = "F1",
-                LevelNumber = 1
-            };
+                Results.Problem(floorId, ex.Message);
+            }
+            return elevator == null ? Results.NotFound() : Results.Ok(String.Format("Sucessfully requested Elevator {0} from Floor {1}", elevator.Id, floorId));
         }
 
-        [HttpPost]
-        [Route("request-elevator")]
-        public void RequestElevator([FromQuery(Name = "floorId")] string floorId)
+        [HttpGet("RequestFloor")]
+        /// Requests a floor from a given elevator (i.e. person presses button inside elevator).
+        public IResult RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
         {
-            Console.WriteLine(floorId);
-        }
-
-        [HttpPost]
-        [Route("request-floor")]
-        public void RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
-        {
-            Console.WriteLine(elevatorId);
-            Console.WriteLine(floorId);
+            Floor floor = null;
+            try
+            {
+                floor = bll.RequestFloor(elevatorId, floorId);
+            }
+            catch (Exception ex)
+            {
+                Results.Problem(floorId, ex.Message);
+            }
+            return floor == null ? Results.NotFound() : Results.Ok(String.Format("Sucessfully requested Floor {0} from Elevator {1}", floor.Id, elevatorId));
         }
 
 

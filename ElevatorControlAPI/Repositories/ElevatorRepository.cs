@@ -10,46 +10,91 @@ namespace ElevatorControlAPI.Repositories
         }
 
         /// <summary>
-        /// Gets a list of the floors that have been requested (i.e. which buttons should light up).
+        /// Submit elevator request for a given floor. Note that requests can originate from a floor or inside the elevator.
         /// </summary>
-        /// <param name="elevator"></param>
+        /// <param name="request"></param>
+        public void AddRequest(Request request)
+        {
+            ///TODO: Submit request to data layer
+        }
+
+        public Elevator GetElevator(Guid elevatorId)
+        {
+            ///TODO: Replace dummy data with call to data layer
+            return new Elevator
+            {
+                Id = elevatorId,
+                FloorRequests = Enumerable.Range(4, 13).Select(index => new Request
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = GetFloor(Guid.NewGuid()),
+                    RequestTime = DateTime.Now,
+                    Status = RequestStatus.Pending
+                }).ToArray(),
+                currentFloor = new Floor()
+                {
+                    Id = Guid.NewGuid(),
+                    DisplayName = "F16",
+                    LevelNumber = 16,
+                }
+            };
+        }
+
+        public Floor GetFloor(Guid floorId)
+        {
+            ///TODO: Replace dummy data with call to data layer
+            return new Floor
+            {
+                Id = floorId,
+                DisplayName = "F15",
+                LevelNumber = 15
+            };
+        }
+
+        /// <summary>
+        /// Get all elevators
+        /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public FloorRequest[] GetFloorRequests(Elevator elevator)
+        public Elevator[] GetElevators()
         {
-            throw new NotImplementedException();
+            ///TODO: Replace dummy data with call to data layer
+            return Enumerable.Range(1, 1).Select(index => new Elevator
+            {
+                Id = Guid.NewGuid(),
+                FloorRequests = Enumerable.Range(4, 13).Select(index => new Request
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = GetFloor(Guid.NewGuid()),
+                    RequestTime = DateTime.Now,
+                    Status = RequestStatus.Pending
+                }).ToArray(),
+                currentFloor = new Floor()
+                {
+                    Id = Guid.NewGuid(),
+                    DisplayName = "F7",
+                    LevelNumber = 7,
+                }
+            }).ToArray();
         }
 
         /// <summary>
-        /// Get the next floor to be serviced for given elevator.
+        /// Get all floor requests for a given elevator id
         /// </summary>
-        /// <param name="elevator"></param>
+        /// <param name="elevatorId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Floor GetNextFloor(Elevator elevator)
+        public Request[] GetFloorRequests(Guid elevatorId)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Request an elevator from a given floor.
-        /// </summary>
-        /// <param name="floor"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void RequestElevator(Floor floor)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Requests a floor from a given elevator (i.e. person presses button inside elevator).
-        /// </summary>
-        /// <param name="elevator"></param>
-        /// <param name="floor"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void RequestFloor(Elevator elevator, Floor floor)
-        {
-            throw new NotImplementedException();
+            ///TODO: Replace dummy data with call to data layer
+            return Enumerable.Range(1, 8).Select(index => new Request
+            {
+                Id = Guid.NewGuid(),
+                Elevator = GetElevator(Guid.NewGuid()),
+                Floor = GetFloor(Guid.NewGuid()),
+                RequestTime = DateTime.Now,
+                Status = RequestStatus.Pending
+            }).ToArray();
         }
     }
 }
