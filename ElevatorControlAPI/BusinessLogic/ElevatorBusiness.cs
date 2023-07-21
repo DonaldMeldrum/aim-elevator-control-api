@@ -65,7 +65,7 @@ namespace ElevatorControlAPI.BusinessLogic
         /// Request an elevator from a given floor. Elevator with fewest floor requests is assigned the request.
         /// </summary>
         /// <param name="floorId"></param>
-        public void RequestElevator(string floorId)
+        public Elevator RequestElevator(string floorId)
         {
             var floorGuid = ValidateGuid(floorId);
             ElevatorRepository repository = new ElevatorRepository();
@@ -82,6 +82,7 @@ namespace ElevatorControlAPI.BusinessLogic
                     RequestTime = DateTime.Now,
                     Status = RequestStatus.Pending
                 });
+                return elevatorCandidate;
             }
             else
             {
@@ -96,7 +97,7 @@ namespace ElevatorControlAPI.BusinessLogic
         /// </summary>
         /// <param name="elevatorId"></param>
         /// <param name="floorId"></param>
-        public void RequestFloor(string elevatorId, string floorId)
+        public Floor RequestFloor(string elevatorId, string floorId)
         {
             var floorGuid = ValidateGuid(floorId);
             var elevatorGuid = ValidateGuid(elevatorId);
@@ -111,6 +112,7 @@ namespace ElevatorControlAPI.BusinessLogic
                 RequestTime = DateTime.Now,
                 Status = RequestStatus.Pending
             });
+            return floor;
         }
 
         private Guid ValidateGuid(string guidString)
