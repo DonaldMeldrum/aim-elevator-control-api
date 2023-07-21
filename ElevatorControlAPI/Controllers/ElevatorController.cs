@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Text.Json.Nodes;
 
 namespace ElevatorControlAPI.Controllers
@@ -18,8 +19,10 @@ namespace ElevatorControlAPI.Controllers
         }
 
         [HttpGet("GetRequestedFloors")]
-        public ActionResult<IEnumerable<Floor>> GetRequestedFloors()
+        /// Gets a list of the floors that have been requested (i.e. which buttons should light up).
+        public ActionResult<IEnumerable<Floor>> GetRequestedFloors([FromQuery(Name = "elevatorId")] string elevatorId)
         {
+            Console.WriteLine(elevatorId);
             return Enumerable.Range(1, 5).Select(index => new Floor
             {
                 DisplayName = "F" + new Random().Next(0, 10),
@@ -27,9 +30,12 @@ namespace ElevatorControlAPI.Controllers
             }).ToArray();
         }
 
-        [HttpGet("GetNextFloor")]
-        public ActionResult<Floor> GetNextFloor() 
+        [HttpGet("get-next-floor")]
+        /// Get the next floor to be serviced for given elevator.
+        public ActionResult<Floor> GetNextFloor([FromQuery(Name = "elevatorId")] string elevatorId) 
         {
+
+            Console.WriteLine(elevatorId);
             return new Floor()
             {
                 DisplayName = "F1",
@@ -39,16 +45,19 @@ namespace ElevatorControlAPI.Controllers
 
         [HttpPost]
         [Route("request-elevator")]
-        public void RequestElevator([FromBody] Floor floor)
+        /// Request an elevator from a given floor.
+        public void RequestElevator([FromQuery(Name = "floorId")] string floorId)
         {
-            Console.WriteLine(floor.ToString());
+            Console.WriteLine(floorId);
         }
 
         [HttpPost]
         [Route("request-floor")]
-        public void RequestFloor([FromBody] Floor floor)
+        /// Requests a floor from a given elevator (i.e. person presses button inside elevator).
+        public void RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
         {
-            Console.WriteLine(floor.ToString());
+            Console.WriteLine(elevatorId);
+            Console.WriteLine(floorId);
         }
 
 
