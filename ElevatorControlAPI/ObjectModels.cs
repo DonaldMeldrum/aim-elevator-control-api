@@ -3,7 +3,8 @@ namespace ElevatorControlAPI
     public class Elevator
     {
         public Guid Id { get; set; }
-        public FloorRequest[] RequestArray { get; set; }
+        public Floor currentFloor { get; set; }
+        public Request[] FloorRequests { get; set; }
     }
 
     public class Floor
@@ -13,17 +14,12 @@ namespace ElevatorControlAPI
         public int LevelNumber { get; set; }
     }
 
-    public class FloorRequest
+    public class Request
     {
+        public Guid Id { get; set; }
         public DateTime RequestTime { get; set; }
-        public Floor? RequestedFloor { get; set; }
-        public RequestStatus Status { get; set; }
-    }
-
-    public class ElevatorRequest
-    {
-        public DateTime RequestTime { get; set; }
-        public Elevator? RequestedElevator { get; set; }
+        public Elevator Elevator { get; set; }
+        public Floor Floor { get; set; }
         public RequestStatus Status { get; set; }
     }
 
