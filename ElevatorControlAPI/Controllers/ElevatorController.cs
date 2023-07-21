@@ -18,8 +18,9 @@ namespace ElevatorControlAPI.Controllers
         }
 
         [HttpGet("GetRequestedFloors")]
-        public ActionResult<IEnumerable<Floor>> GetRequestedFloors()
+        public ActionResult<IEnumerable<Floor>> GetRequestedFloors([FromQuery(Name = "elevatorId")] string elevatorId)
         {
+            Console.WriteLine(elevatorId);
             return Enumerable.Range(1, 5).Select(index => new Floor
             {
                 DisplayName = "F" + new Random().Next(0, 10),
@@ -27,9 +28,11 @@ namespace ElevatorControlAPI.Controllers
             }).ToArray();
         }
 
-        [HttpGet("GetNextFloor")]
-        public ActionResult<Floor> GetNextFloor() 
+        [HttpGet("get-next-floor")]
+        public ActionResult<Floor> GetNextFloor([FromQuery(Name = "elevatorId")] string elevatorId) 
         {
+
+            Console.WriteLine(elevatorId);
             return new Floor()
             {
                 DisplayName = "F1",
@@ -39,16 +42,17 @@ namespace ElevatorControlAPI.Controllers
 
         [HttpPost]
         [Route("request-elevator")]
-        public void RequestElevator([FromBody] Floor floor)
+        public void RequestElevator([FromQuery(Name = "floorId")] string floorId)
         {
-            Console.WriteLine(floor.ToString());
+            Console.WriteLine(floorId);
         }
 
         [HttpPost]
         [Route("request-floor")]
-        public void RequestFloor([FromBody] Floor floor)
+        public void RequestFloor([FromQuery(Name = "elevatorId")] string elevatorId, [FromQuery(Name = "floorId")] string floorId)
         {
-            Console.WriteLine(floor.ToString());
+            Console.WriteLine(elevatorId);
+            Console.WriteLine(floorId);
         }
 
 

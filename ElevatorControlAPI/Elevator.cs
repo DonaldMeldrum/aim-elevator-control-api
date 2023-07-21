@@ -3,14 +3,12 @@ namespace ElevatorControlAPI
     public class Elevator
     {
         public Guid Id { get; set; }
-        public Floor CurrentFloor { get; set; }
-        public Floor NextFloor { get; set; }
-        public Floor PreviousFloor { get; set; }
         public FloorRequest[] RequestArray { get; set; }
     }
 
     public class Floor
     {
+        public Guid Id { get; set; }
         public string DisplayName { get; set; }
         public int LevelNumber { get; set; }
     }
